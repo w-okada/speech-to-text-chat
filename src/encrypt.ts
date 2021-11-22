@@ -12,7 +12,7 @@ export type EncrypterParams = {
 };
 
 export class Encrypter {
-    algorithm = "aes-512-cbc";
+    algorithm = "aes-256-cbc";
 
     password: string;
     salt: string;
