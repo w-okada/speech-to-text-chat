@@ -12,10 +12,7 @@ export type EncrypterParams = {
 };
 
 export class Encrypter {
-    algorithm = "aes-256-cbc";
-    // const password = generateRandomString(16);
-    // const salt = generateRandomString(16);
-    // const key = crypto.scryptSync(password, salt, 32);
+    algorithm = "aes-512-cbc";
 
     password: string;
     salt: string;

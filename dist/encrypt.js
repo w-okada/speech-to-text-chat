@@ -23,7 +23,7 @@ exports.Encrypter = void 0;
 const crypto = __importStar(require("crypto"));
 class Encrypter {
     constructor(params) {
-        this.algorithm = "aes-256-cbc";
+        this.algorithm = "aes-512-cbc";
         this.generateRandomString = (length) => {
             return crypto.randomBytes(length).reduce((p, i) => p + (i % 36).toString(36), "");
         };
