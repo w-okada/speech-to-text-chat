@@ -50,8 +50,8 @@ const App = () => {
     const trueEndFlag = useRef<boolean>(false); // Workaround for avoiding first onend event
 
     const onDeleteClicked = () => {
-        console.log(`DELETE ${channelId}, ${ts}`);
-        restApiClient.deleteWords(channelId, ts);
+        console.log(`DELETE ${teamId} ${channelId}, ${ts}`);
+        restApiClient.deleteWords(teamId, channelId, ts);
     };
 
     // const onReloadDeviceClicked = () => {

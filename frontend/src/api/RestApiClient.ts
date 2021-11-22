@@ -51,11 +51,12 @@ export class RestApiClient {
         return data;
     };
 
-    deleteWords = async (channel_id: string, ts: string) => {
+    deleteWords = async (team_id: string, channel_id: string, ts: string) => {
         const url = `${this._baseUrl}/api/words`;
         console.log(url);
         console.log(this._baseUrl);
         const request = {
+            team_id: team_id,
             channel_id: channel_id,
             ts: ts,
         };
