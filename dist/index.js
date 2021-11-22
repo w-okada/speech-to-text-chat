@@ -104,6 +104,7 @@ receiver.app.post(`/api/words`, async (req, res) => {
         ts: room.ts,
         blocks: blocks,
         token: token,
+        text: "rendering failed??",
     };
     await app.client.chat.update(msg);
     return;
