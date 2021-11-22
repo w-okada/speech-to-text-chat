@@ -5,7 +5,7 @@ import { generateInitialRoom, ROOMS, UserInformation } from "./data";
 import { decodeInformation, encodeInformation } from "./encrypt";
 import { v4 } from "uuid";
 import { addTeamInformation, deleteInstallation, fetchInstallation, fetchToken } from "./auth";
-const BASE_URL = process.env.HEROKU_URL;
+const BASE_URL = process.env.APP_HEROKU_URL;
 const port: number = Number(process.env.PORT) || 3000;
 const rooms: ROOMS = {};
 
