@@ -31,7 +31,6 @@ const receiver = new ExpressReceiver({
     },
     installerOptions: {
         directInstall: true,
-        redirectUriPath: "http://google.com",
     },
 });
 
