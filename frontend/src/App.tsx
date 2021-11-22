@@ -35,6 +35,7 @@ const App = () => {
     const [words, setWords] = useState<string>("");
     const [wordsSent, setWordsSent] = useState<boolean>(false);
 
+    const [teamId, setTeamId] = useState("");
     const [channelId, setChannelId] = useState("");
     const [ts, setTs] = useState("");
 
@@ -151,7 +152,7 @@ const App = () => {
                     </Avatar>
                 </div>
                 <div style={{ margin: "20px" }}>
-                    <Typography variant="h4">MokuMoku Text</Typography>
+                    <Typography variant="h4">Speech-To-Text-Chat</Typography>
                 </div>
                 <div style={{ margin: "20px" }}>
                     <Typography variant="h4">{recState}</Typography>
@@ -196,7 +197,10 @@ const App = () => {
 
                 <div style={{ margin: "20px" }}></div>
                 <div>debug</div>
-                <div style={{ display: "flex", alignItems: "flex-end" }}>
+                <div style={{ display: "flex", flexDirection: "column" }}>
+                    <div>
+                        <TextField required variant="standard" margin="normal" fullWidth id="team_id" name="team_id" label="team_id" value={teamId} onChange={(e) => setTeamId(e.target.value)} />
+                    </div>
                     <div>
                         <TextField
                             required

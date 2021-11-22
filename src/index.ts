@@ -102,11 +102,15 @@ receiver.app.post(`/api/words`, async (req, res) => {
  * Delete Message
  */
 receiver.app.delete(`/api/words`, async (req, res) => {
+    const team_id = req.body["team_id"];
     const channel_id = req.body["channel_id"];
     const ts = req.body["ts"];
+
+    const token = await fetchToken(team_id);
     const msg = {
         channel: channel_id,
         ts: ts,
+        token: token,
     };
     app.client.chat.delete(msg);
     res.send(JSON.stringify({ success: true }));
