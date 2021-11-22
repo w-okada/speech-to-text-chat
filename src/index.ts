@@ -29,6 +29,9 @@ const receiver = new ExpressReceiver({
             return;
         },
     },
+    installerOptions: {
+        directInstall: true,
+    },
 });
 
 const STATIC_PATH = __dirname + "/../frontend/dist/";
