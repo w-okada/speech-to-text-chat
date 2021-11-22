@@ -19,35 +19,39 @@ var __importStar = (this && this.__importStar) || function (mod) {
     return result;
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.decodeInformation = exports.encodeInformation = void 0;
+exports.Encrypter = void 0;
 const crypto = __importStar(require("crypto"));
-const algorithm = "aes-256-cbc";
-const password = generateRandomString(16);
-const salt = generateRandomString(16);
-const key = crypto.scryptSync(password, salt, 32);
-const iv = crypto.randomBytes(16);
-const secret = generateRandomString(16);
-function generateRandomString(length) {
-    return crypto.randomBytes(length).reduce((p, i) => p + (i % 36).toString(36), "");
+class Encrypter {
+    constructor(params) {
+        this.algorithm = "aes-256-cbc";
+        this.generateRandomString = (length) => {
+            return crypto.randomBytes(length).reduce((p, i) => p + (i % 36).toString(36), "");
+        };
+        this.encodeInformation = (info) => {
+            const envelop = { data: info, secret: this.secret };
+            const cipher = crypto.createCipheriv(this.algorithm, this.key, this.iv); // 暗号用インスタンス
+            const cipheredData = cipher.update(JSON.stringify(envelop), "utf8", "hex") + cipher.final("hex");
+            return cipheredData;
+        };
+        this.decodeInformation = (cipheredData) => {
+            const decipher = crypto.createDecipheriv(this.algorithm, this.key, this.iv); // 復号用インスタンス
+            const decipheredDataJson = decipher.update(cipheredData, "hex", "utf8") + decipher.final("utf8");
+            const decipheredData = JSON.parse(decipheredDataJson);
+            if (decipheredData.secret === this.secret) {
+                decipheredData.secret = undefined;
+                return decipheredData.data;
+            }
+            else {
+                console.log("!!!!!!!!!!! secret is not match !!!!!!!!!!!");
+                return null;
+            }
+        };
+        this.password = params.password || this.generateRandomString(16);
+        this.salt = params.salt || this.generateRandomString(16);
+        this.secret = params.secret || this.generateRandomString(16);
+        this.key = crypto.scryptSync(this.password, this.salt, 32);
+        // this.iv = params.iv || crypto.randomBytes(16);
+        this.iv = Buffer.from([0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]);
+    }
 }
-const encodeInformation = (info) => {
-    const envelop = { data: info, secret: secret };
-    const cipher = crypto.createCipheriv(algorithm, key, iv); // 暗号用インスタンス
-    const cipheredData = cipher.update(JSON.stringify(envelop), "utf8", "hex") + cipher.final("hex");
-    return cipheredData;
-};
-exports.encodeInformation = encodeInformation;
-const decodeInformation = (cipheredData) => {
-    const decipher = crypto.createDecipheriv(algorithm, key, iv); // 復号用インスタンス
-    const decipheredDataJson = decipher.update(cipheredData, "hex", "utf8") + decipher.final("utf8");
-    const decipheredData = JSON.parse(decipheredDataJson);
-    if (decipheredData.secret === secret) {
-        decipheredData.secret = undefined;
-        return decipheredData.data;
-    }
-    else {
-        console.log("!!!!!!!!!!! secret is not match !!!!!!!!!!!");
-        return null;
-    }
-};
-exports.decodeInformation = decodeInformation;
+exports.Encrypter = Encrypter;

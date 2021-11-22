@@ -2,12 +2,13 @@ import { App, AppOptions, ExpressReceiver, Installation, InstallationQuery } fro
 import * as express from "express";
 import { generateControlBlocks, generateHelpBlocks, generateOpenURLBlocks, generateWholeBlocks } from "./blocks";
 import { generateInitialRoom, ROOMS, UserInformation } from "./data";
-import { decodeInformation, encodeInformation } from "./encrypt";
+import { Encrypter } from "./encrypt";
 import { v4 } from "uuid";
 import { addTeamInformation, deleteInstallation, fetchInstallation, fetchToken } from "./auth";
 const BASE_URL = process.env.APP_HEROKU_URL;
 const port: number = Number(process.env.PORT) || 3000;
 const rooms: ROOMS = {};
+const urlEncrypter = new Encrypter({});
 
 const receiver = new ExpressReceiver({
     signingSecret: process.env.SLACK_SIGNING_SECRET,
@@ -58,7 +59,7 @@ const app = new App(config);
  */
 receiver.app.post(`/api/decodeInformation`, async (req, res) => {
     const encInfo = req.body["encInfo"];
-    const info = decodeInformation<UserInformation>(encInfo);
+    const info = urlEncrypter.decodeInformation<UserInformation>(encInfo);
     res.send(JSON.stringify(info));
 });
 
@@ -69,7 +70,7 @@ receiver.app.post(`/api/words`, async (req, res) => {
     const encInfo = req.body["encInfo"];
     const word = req.body["word"];
     // console.log(req.body);
-    const info = decodeInformation<UserInformation>(encInfo);
+    const info = urlEncrypter.decodeInformation<UserInformation>(encInfo);
     if (info === null) {
         res.send(JSON.stringify({ success: false }));
     }
@@ -312,7 +313,7 @@ const start = async () => {
             image_url: userInfo["user"]["profile"]["image_192"],
         };
 
-        const encInfo = encodeInformation<UserInformation>(user);
+        const encInfo = urlEncrypter.encodeInformation<UserInformation>(user);
 
         const url = `${BASE_URL}static/index.html?token=${encInfo}`;
         const res = await app.client.chat.postEphemeral({

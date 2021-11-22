@@ -29,6 +29,7 @@ const auth_1 = require("./auth");
 const BASE_URL = process.env.APP_HEROKU_URL;
 const port = Number(process.env.PORT) || 3000;
 const rooms = {};
+const urlEncrypter = new encrypt_1.Encrypter({});
 const receiver = new bolt_1.ExpressReceiver({
     signingSecret: process.env.SLACK_SIGNING_SECRET,
     endpoints: `/slack/events`,
@@ -73,7 +74,7 @@ const app = new bolt_1.App(config);
  */
 receiver.app.post(`/api/decodeInformation`, async (req, res) => {
     const encInfo = req.body["encInfo"];
-    const info = (0, encrypt_1.decodeInformation)(encInfo);
+    const info = urlEncrypter.decodeInformation(encInfo);
     res.send(JSON.stringify(info));
 });
 /**
@@ -83,7 +84,7 @@ receiver.app.post(`/api/words`, async (req, res) => {
     const encInfo = req.body["encInfo"];
     const word = req.body["word"];
     // console.log(req.body);
-    const info = (0, encrypt_1.decodeInformation)(encInfo);
+    const info = urlEncrypter.decodeInformation(encInfo);
     if (info === null) {
         res.send(JSON.stringify({ success: false }));
     }
@@ -301,7 +302,7 @@ const start = async () => {
             room_key: room.key,
             image_url: userInfo["user"]["profile"]["image_192"],
         };
-        const encInfo = (0, encrypt_1.encodeInformation)(user);
+        const encInfo = urlEncrypter.encodeInformation(user);
         const url = `${BASE_URL}static/index.html?token=${encInfo}`;
         const res = await app.client.chat.postEphemeral({
             channel: channelId,
