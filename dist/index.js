@@ -51,6 +51,7 @@ const receiver = new bolt_1.ExpressReceiver({
     },
     installerOptions: {
         directInstall: true,
+        redirectUriPath: "http://google.com",
     },
 });
 const STATIC_PATH = __dirname + "/../frontend/dist/";
