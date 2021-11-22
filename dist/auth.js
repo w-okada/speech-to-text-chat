@@ -11,7 +11,7 @@ const pool = new pg_1.Pool({
 });
 const database = {};
 const addTeamInformation = async (installation) => {
-    // console.log("STORE INSTALATTION!!!!!!!!!!!");
+    console.log("STORE INSTALATTION!!!!!!!!!!!");
     // console.dir(database, { depth: 5 });
     var query = {
         text: "INSERT INTO public.auths (team_id, data) VALUES($1, $2)",
@@ -48,7 +48,7 @@ const queryInstallation = async (teamId) => {
     return null;
 };
 const fetchInstallation = async (installQuery) => {
-    // console.log("FETCH INSTALATTION!!!!!!!!!!!");
+    console.log("FETCH INSTALATTION!!!!!!!!!!!");
     if (!database[installQuery.teamId]) {
         database[installQuery.teamId] = await queryInstallation(installQuery.teamId);
     }
@@ -56,7 +56,7 @@ const fetchInstallation = async (installQuery) => {
 };
 exports.fetchInstallation = fetchInstallation;
 const deleteInstallation = async (installQuery) => {
-    // console.log("DELETE INSTALATTION!!!!!!!!!!!1");
+    console.log("DELETE INSTALATTION!!!!!!!!!!!1");
     delete database[installQuery.teamId];
     return;
 };

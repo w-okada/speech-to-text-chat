@@ -11,7 +11,7 @@ const pool = new Pool({
 
 const database = {};
 export const addTeamInformation = async <AuthVersion extends "v1" | "v2">(installation: Installation<AuthVersion, boolean>) => {
-    // console.log("STORE INSTALATTION!!!!!!!!!!!");
+    console.log("STORE INSTALATTION!!!!!!!!!!!");
     // console.dir(database, { depth: 5 });
     var query = {
         text: "INSERT INTO public.auths (team_id, data) VALUES($1, $2)",
@@ -48,7 +48,7 @@ const queryInstallation = async (teamId: string) => {
 };
 
 export const fetchInstallation = async (installQuery: InstallationQuery<boolean>) => {
-    // console.log("FETCH INSTALATTION!!!!!!!!!!!");
+    console.log("FETCH INSTALATTION!!!!!!!!!!!");
     if (!database[installQuery.teamId]) {
         database[installQuery.teamId] = await queryInstallation(installQuery.teamId);
     }
@@ -56,7 +56,7 @@ export const fetchInstallation = async (installQuery: InstallationQuery<boolean>
 };
 
 export const deleteInstallation = async (installQuery: InstallationQuery<boolean>) => {
-    // console.log("DELETE INSTALATTION!!!!!!!!!!!1");
+    console.log("DELETE INSTALATTION!!!!!!!!!!!1");
     delete database[installQuery.teamId];
     return;
 };
