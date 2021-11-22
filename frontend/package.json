@@ -1,0 +1,57 @@
+{
+    "name": "frontend",
+    "version": "1.0.0",
+    "description": "",
+    "main": ".eslintrc.js",
+    "bin": {
+        "frontend": "bin/generateLanguages.js"
+    },
+    "scripts": {
+        "clean": "rimraf dist/*",
+        "webpack:build": "webpack --config webpack.config.js",
+        "webpack:watch": "webpack --watch --config webpack.config.js",
+        "webpack:start": "webpack serve --config webpack.config.js",
+        "copy:resources": "mkdir -p dist && cp -r public/* dist/",
+        "build:languages": "node bin/generateLanguages.js",
+        "build": "run-s clean copy:resources build:languages webpack:build ",
+        "watch": "run-p copy:resources webpack:watch",
+        "start": "run-p copy:resources webpack:start",
+        "lint": "eslint src",
+        "lint:fix": "eslint --fix src",
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "keywords": [],
+    "author": "",
+    "license": "ISC",
+    "dependencies": {
+        "@material-ui/core": "^4.12.3",
+        "@material-ui/icons": "^4.11.2",
+        "react": "^17.0.2",
+        "react-dom": "^17.0.2"
+    },
+    "devDependencies": {
+        "@babel/core": "^7.16.0",
+        "@babel/plugin-transform-runtime": "^7.16.4",
+        "@babel/preset-env": "^7.16.4",
+        "@babel/preset-react": "^7.16.0",
+        "@babel/preset-typescript": "^7.16.0",
+        "@babel/runtime": "^7.16.3",
+        "@types/react": "^17.0.36",
+        "@types/react-dom": "^17.0.11",
+        "@typescript-eslint/eslint-plugin": "^5.4.0",
+        "@typescript-eslint/parser": "^5.4.0",
+        "babel-loader": "^8.2.3",
+        "eslint": "^8.3.0",
+        "eslint-config-prettier": "^8.3.0",
+        "eslint-plugin-prettier": "^4.0.0",
+        "eslint-plugin-react": "^7.27.1",
+        "eslint-webpack-plugin": "^3.1.1",
+        "html-webpack-plugin": "^5.5.0",
+        "npm-run-all": "^4.1.5",
+        "prettier": "^2.4.1",
+        "typescript": "^4.5.2",
+        "webpack": "^5.64.2",
+        "webpack-cli": "^4.9.1",
+        "webpack-dev-server": "^4.5.0"
+    }
+}
