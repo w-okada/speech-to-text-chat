@@ -38,6 +38,7 @@ const queryInstallationFromDB = async (teamId: string) => {
         text: "SELECT * FROM public.auths WHERE team_id = $1",
         values: [teamId],
     };
+    console.log("Query", query);
     try {
         const client = await pool.connect();
         const res = await client.query(query);
