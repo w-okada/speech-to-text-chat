@@ -2,6 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.fetchToken = exports.deleteInstallation = exports.fetchInstallation = exports.addTeamInformation = void 0;
 const pg_1 = require("pg");
+const encrypt_1 = require("./encrypt");
 const pool = new pg_1.Pool({
     connectionString: process.env.DATABASE_URL,
     // ssl: true,
@@ -9,11 +10,18 @@ const pool = new pg_1.Pool({
         rejectUnauthorized: false,
     },
 });
+const authEncrypter = new encrypt_1.Encrypter({
+    password: "auth",
+    salt: "auth",
+    secret: "auth",
+});
 const database = {};
 const addInstllationToDB = async (installation) => {
+    const info = JSON.stringify(installation);
+    const encInfo = authEncrypter.encodeInformation(info);
     var query = {
         text: "INSERT INTO public.auths (team_id, data) VALUES($1, $2)",
-        values: [installation.team.id, JSON.stringify(installation)],
+        values: [installation.team.id, encInfo],
     };
     try {
         const client = await pool.connect();
@@ -35,8 +43,9 @@ const queryInstallationFromDB = async (teamId) => {
             console.log("no record!!");
             return null;
         }
-        const data = JSON.parse(res.rows[0].data);
-        return data;
+        const encInfo = JSON.parse(res.rows[0].data);
+        const info = authEncrypter.decodeInformation(encInfo);
+        return info;
     }
     catch (exception) {
         console.log("get team information error:", JSON.stringify(exception));

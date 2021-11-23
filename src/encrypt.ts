@@ -28,7 +28,7 @@ export class Encrypter {
         this.iv = Buffer.from([0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]);
     }
 
-    generateRandomString = (length: number) => {
+    private generateRandomString = (length: number) => {
         return crypto.randomBytes(length).reduce((p, i) => p + (i % 36).toString(36), "");
     };
 

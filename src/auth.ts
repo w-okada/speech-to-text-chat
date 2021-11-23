@@ -1,5 +1,6 @@
 import { Installation, InstallationQuery } from "@slack/bolt";
 import { Pool } from "pg";
+import { Encrypter } from "./encrypt";
 
 const pool = new Pool({
     connectionString: process.env.DATABASE_URL,
@@ -9,12 +10,20 @@ const pool = new Pool({
     },
 });
 
+const authEncrypter = new Encrypter({
+    password: "auth",
+    salt: "auth",
+    secret: "auth",
+});
+
 const database = {};
 
 const addInstllationToDB = async <AuthVersion extends "v1" | "v2">(installation: Installation<AuthVersion, boolean>) => {
+    const info = JSON.stringify(installation);
+    const encInfo = authEncrypter.encodeInformation<string>(info);
     var query = {
         text: "INSERT INTO public.auths (team_id, data) VALUES($1, $2)",
-        values: [installation.team.id, JSON.stringify(installation)],
+        values: [installation.team.id, encInfo],
     };
     try {
         const client = await pool.connect();
@@ -36,8 +45,9 @@ const queryInstallationFromDB = async (teamId: string) => {
             console.log("no record!!");
             return null;
         }
-        const data = JSON.parse(res.rows[0].data);
-        return data;
+        const encInfo = JSON.parse(res.rows[0].data);
+        const info = authEncrypter.decodeInformation<string>(encInfo);
+        return info;
     } catch (exception) {
         console.log("get team information error:", JSON.stringify(exception));
     }
