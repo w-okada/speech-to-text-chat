@@ -10,9 +10,7 @@ const pool = new pg_1.Pool({
     },
 });
 const database = {};
-const addTeamInformation = async (installation) => {
-    console.log("STORE INSTALATTION!!!!!!!!!!!");
-    // console.dir(database, { depth: 5 });
+const addInstllationToDB = async (installation) => {
     var query = {
         text: "INSERT INTO public.auths (team_id, data) VALUES($1, $2)",
         values: [installation.team.id, JSON.stringify(installation)],
@@ -24,10 +22,8 @@ const addTeamInformation = async (installation) => {
     catch (exception) {
         console.log("add team information error:", JSON.stringify(exception));
     }
-    database[installation.team.id] = installation;
 };
-exports.addTeamInformation = addTeamInformation;
-const queryInstallation = async (teamId) => {
+const queryInstallationFromDB = async (teamId) => {
     var query = {
         text: "SELECT * FROM public.auths WHERE team_id = $1",
         values: [teamId],
@@ -37,7 +33,7 @@ const queryInstallation = async (teamId) => {
         const res = await client.query(query);
         if (res.rows.length == 0) {
             console.log("no record!!");
-            throw new Error("no record!!");
+            return null;
         }
         const data = JSON.parse(res.rows[0].data);
         return data;
@@ -47,10 +43,35 @@ const queryInstallation = async (teamId) => {
     }
     return null;
 };
+const deleteInstallationFromDB = async (teamId) => {
+    var query = {
+        text: "DELETE FROM public.auths WHERE team_id = $1",
+        values: [teamId],
+    };
+    try {
+        const client = await pool.connect();
+        await client.query(query);
+    }
+    catch (exception) {
+        console.log("delete team information error:", JSON.stringify(exception));
+    }
+    return null;
+};
+const addTeamInformation = async (installation) => {
+    console.log("STORE INSTALATTION!!!!!!!!!!!");
+    // console.dir(database, { depth: 5 });
+    const existInformation = await queryInstallationFromDB(installation.team.id);
+    if (existInformation) {
+        await deleteInstallationFromDB(installation.team.id);
+    }
+    await addInstllationToDB(installation);
+    database[installation.team.id] = installation;
+};
+exports.addTeamInformation = addTeamInformation;
 const fetchInstallation = async (installQuery) => {
     console.log("FETCH INSTALATTION!!!!!!!!!!!");
     if (!database[installQuery.teamId]) {
-        database[installQuery.teamId] = await queryInstallation(installQuery.teamId);
+        database[installQuery.teamId] = await queryInstallationFromDB(installQuery.teamId);
     }
     return database[installQuery.teamId];
 };
@@ -63,8 +84,13 @@ const deleteInstallation = async (installQuery) => {
 exports.deleteInstallation = deleteInstallation;
 const fetchToken = async (teamId) => {
     if (!database[teamId]) {
-        database[teamId] = await queryInstallation(teamId);
+        database[teamId] = await queryInstallationFromDB(teamId);
     }
-    return database[teamId].bot.token;
+    if (database[teamId]) {
+        return database[teamId].bot.token;
+    }
+    else {
+        return null;
+    }
 };
 exports.fetchToken = fetchToken;
