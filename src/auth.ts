@@ -64,8 +64,9 @@ export const addTeamInformation = async <AuthVersion extends "v1" | "v2">(instal
     const existInformation = await queryInstallationFromDB(installation.team.id);
     if (existInformation) {
         await deleteInstallationFromDB(installation.team.id);
+    } else {
+        await addInstllationToDB(installation);
     }
-    await addInstllationToDB(installation);
     database[installation.team.id] = installation;
 };
 

@@ -64,7 +64,9 @@ const addTeamInformation = async (installation) => {
     if (existInformation) {
         await deleteInstallationFromDB(installation.team.id);
     }
-    await addInstllationToDB(installation);
+    else {
+        await addInstllationToDB(installation);
+    }
     database[installation.team.id] = installation;
 };
 exports.addTeamInformation = addTeamInformation;
