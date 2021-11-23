@@ -47,6 +47,7 @@ const queryInstallationFromDB = async (teamId: string) => {
             return null;
         }
         const encInfo = JSON.parse(res.rows[0].data);
+        console.log("encInfo", encInfo);
         const info = authEncrypter.decodeInformation<string>(encInfo);
         return info;
     } catch (exception) {
