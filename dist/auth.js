@@ -36,7 +36,6 @@ const queryInstallationFromDB = async (teamId) => {
         text: "SELECT * FROM public.auths WHERE team_id = $1",
         values: [teamId],
     };
-    console.log("Query", query);
     try {
         const client = await pool.connect();
         const res = await client.query(query);
@@ -68,7 +67,7 @@ const deleteInstallationFromDB = async (teamId) => {
     return null;
 };
 const addTeamInformation = async (installation) => {
-    console.log("STORE INSTALATTION!!!!!!!!!!!");
+    // console.log("STORE INSTALATTION!!!!!!!!!!!");
     // console.dir(database, { depth: 5 });
     const existInformation = await queryInstallationFromDB(installation.team.id);
     if (existInformation) {
@@ -79,7 +78,7 @@ const addTeamInformation = async (installation) => {
 };
 exports.addTeamInformation = addTeamInformation;
 const fetchInstallation = async (installQuery) => {
-    console.log("FETCH INSTALATTION!!!!!!!!!!!");
+    // console.log("FETCH INSTALATTION!!!!!!!!!!!");
     if (!database[installQuery.teamId]) {
         database[installQuery.teamId] = await queryInstallationFromDB(installQuery.teamId);
     }
@@ -87,7 +86,7 @@ const fetchInstallation = async (installQuery) => {
 };
 exports.fetchInstallation = fetchInstallation;
 const deleteInstallation = async (installQuery) => {
-    console.log("DELETE INSTALATTION!!!!!!!!!!!1");
+    // console.log("DELETE INSTALATTION!!!!!!!!!!!");
     delete database[installQuery.teamId];
     return;
 };

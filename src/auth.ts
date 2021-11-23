@@ -38,7 +38,6 @@ const queryInstallationFromDB = async (teamId: string) => {
         text: "SELECT * FROM public.auths WHERE team_id = $1",
         values: [teamId],
     };
-    console.log("Query", query);
     try {
         const client = await pool.connect();
         const res = await client.query(query);
@@ -69,7 +68,7 @@ const deleteInstallationFromDB = async (teamId: string) => {
 };
 
 export const addTeamInformation = async <AuthVersion extends "v1" | "v2">(installation: Installation<AuthVersion, boolean>) => {
-    console.log("STORE INSTALATTION!!!!!!!!!!!");
+    // console.log("STORE INSTALATTION!!!!!!!!!!!");
     // console.dir(database, { depth: 5 });
 
     const existInformation = await queryInstallationFromDB(installation.team.id);
@@ -81,7 +80,7 @@ export const addTeamInformation = async <AuthVersion extends "v1" | "v2">(instal
 };
 
 export const fetchInstallation = async (installQuery: InstallationQuery<boolean>) => {
-    console.log("FETCH INSTALATTION!!!!!!!!!!!");
+    // console.log("FETCH INSTALATTION!!!!!!!!!!!");
     if (!database[installQuery.teamId]) {
         database[installQuery.teamId] = await queryInstallationFromDB(installQuery.teamId);
     }
@@ -89,7 +88,7 @@ export const fetchInstallation = async (installQuery: InstallationQuery<boolean>
 };
 
 export const deleteInstallation = async (installQuery: InstallationQuery<boolean>) => {
-    console.log("DELETE INSTALATTION!!!!!!!!!!!1");
+    // console.log("DELETE INSTALATTION!!!!!!!!!!!");
     delete database[installQuery.teamId];
     return;
 };
