@@ -93,7 +93,7 @@ receiver.app.post(`/api/words`, async (req, res) => {
     /// update db ////
     const room = rooms[info.room_key];
     if (!room) {
-        console.log(`[Exception]: the room is not found.[${info.room_key}]`);
+        console.log(`[Exception]: the room is not found. [${info.room_key}]`);
     }
     room.words.push({
         userId: info.user_id,
