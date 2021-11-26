@@ -11,9 +11,9 @@ const pool = new Pool({
 });
 
 const authEncrypter = new Encrypter({
-    password: "auth",
-    salt: "auth",
-    secret: "auth",
+    password: process.env.APP_DB_PASSWORD || "pass",
+    salt: process.env.APP_DB_SALT || "salt",
+    secret: process.env.APP_DB_SECRET || "secret",
 });
 
 const database = {};
