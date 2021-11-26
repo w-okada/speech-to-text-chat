@@ -11,9 +11,9 @@ const pool = new pg_1.Pool({
     },
 });
 const authEncrypter = new encrypt_1.Encrypter({
-    password: "auth",
-    salt: "auth",
-    secret: "auth",
+    password: process.env.APP_DB_PASSWORD || "pass",
+    salt: process.env.APP_DB_SALT || "salt",
+    secret: process.env.APP_DB_SECRET || "secret",
 });
 const database = {};
 const addInstllationToDB = async (installation) => {
