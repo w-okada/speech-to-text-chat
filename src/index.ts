@@ -186,7 +186,7 @@ const start = async () => {
         if (event.subtype == "sh_room_created") {
             const uuid = v4();
             // @ts-ignore
-            const room = generateInitialRoom(uuid, body.team_id, event.channel, null, "", "Slack-Voice-Chat", event.ts, event.room.id, true);
+            const room = generateInitialRoom(uuid, body.team_id, event.channel, null, "", "speech-to-text-chat", event.ts, event.room.id, true);
             const controlBlocks = generateControlBlocks(room);
 
             const msg = {
