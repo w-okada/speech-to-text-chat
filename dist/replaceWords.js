@@ -12,7 +12,7 @@ const pool = new pg_1.Pool({
 const replaceWords = {};
 const loadReplaceWords = async (teamId) => {
     var query = {
-        text: "SELECT * FROM public.replace_words WHERE replace_words = $1",
+        text: "SELECT * FROM public.replace_words WHERE team_id = $1",
         values: [teamId],
     };
     try {
@@ -31,7 +31,7 @@ const loadReplaceWords = async (teamId) => {
 };
 const saveReplaceWords = async (teamId, data) => {
     var query = {
-        text: "SELECT * FROM public.replace_words WHERE replace_words = $1",
+        text: "SELECT * FROM public.replace_words WHERE team_id = $1",
         values: [teamId],
     };
     console.log(`SELECT1 ${teamId}`);

@@ -15,7 +15,7 @@ const replaceWords: AllReplaceWords = {};
 
 const loadReplaceWords = async (teamId: string): Promise<ReplaceWords> => {
     var query = {
-        text: "SELECT * FROM public.replace_words WHERE replace_words = $1",
+        text: "SELECT * FROM public.replace_words WHERE team_id = $1",
         values: [teamId],
     };
     try {
@@ -34,7 +34,7 @@ const loadReplaceWords = async (teamId: string): Promise<ReplaceWords> => {
 
 const saveReplaceWords = async (teamId: string, data: ReplaceWords) => {
     var query = {
-        text: "SELECT * FROM public.replace_words WHERE replace_words = $1",
+        text: "SELECT * FROM public.replace_words WHERE team_id = $1",
         values: [teamId],
     };
     console.log(`SELECT1 ${teamId}`);
