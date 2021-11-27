@@ -134,7 +134,7 @@ receiver.app.delete(`/api/words`, async (req, res) => {
 /**
  * Get Replace Words
  */
-receiver.app.post(`/api/replaceWords`, async (req, res) => {
+receiver.app.get(`/api/replaceWords`, async (req, res) => {
     const encInfo = req.body["encInfo"];
     // console.log(req.body);
     const info = urlEncrypter.decodeInformation(encInfo);
