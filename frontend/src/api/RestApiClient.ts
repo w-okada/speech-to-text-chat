@@ -73,4 +73,45 @@ export class RestApiClient {
         const data: GeneralResponse = await response.json();
         return data;
     };
+
+    addReplaceWord = async (encInfo: string, inputWord: string, outputWord: string) => {
+        const url = `${this._baseUrl}/api/replaceWords`;
+        const request = {
+            encInfo: encInfo,
+            input_word: inputWord,
+            output_word: outputWord,
+        };
+        const requestBody = JSON.stringify(request);
+        console.log(requestBody);
+        const response = await fetch(url, {
+            method: "POST",
+            body: requestBody,
+            headers: {
+                Accept: "application/json",
+                "Content-Type": "application/json",
+            },
+        });
+        const data: GeneralResponse = await response.json();
+        return data;
+    };
+
+    deleteReplaceWord = async (encInfo: string, inputWord: string) => {
+        const url = `${this._baseUrl}/api/replaceWords`;
+        const request = {
+            encInfo: encInfo,
+            input_word: inputWord,
+        };
+        const requestBody = JSON.stringify(request);
+        console.log(requestBody);
+        const response = await fetch(url, {
+            method: "DELETE",
+            body: requestBody,
+            headers: {
+                Accept: "application/json",
+                "Content-Type": "application/json",
+            },
+        });
+        const data: GeneralResponse = await response.json();
+        return data;
+    };
 }

@@ -26,6 +26,7 @@ const data_1 = require("./data");
 const encrypt_1 = require("./encrypt");
 const uuid_1 = require("uuid");
 const auth_1 = require("./auth");
+const replaceWords_1 = require("./replaceWords");
 const BASE_URL = process.env.APP_HEROKU_URL;
 const port = Number(process.env.PORT) || 3000;
 const rooms = {};
@@ -129,6 +130,48 @@ receiver.app.delete(`/api/words`, async (req, res) => {
     app.client.chat.delete(msg);
     res.send(JSON.stringify({ success: true }));
     return;
+});
+/**
+ * Get Replace Words
+ */
+receiver.app.post(`/api/replaceWords`, async (req, res) => {
+    const encInfo = req.body["encInfo"];
+    // console.log(req.body);
+    const info = urlEncrypter.decodeInformation(encInfo);
+    if (info === null) {
+        res.send(JSON.stringify({ success: false }));
+    }
+    const replaceWords = await (0, replaceWords_1.getReplcaceWord)(info.team_id);
+    res.send(JSON.stringify(replaceWords));
+});
+/**
+ * Add Replace Words
+ */
+receiver.app.post(`/api/replaceWords`, async (req, res) => {
+    const encInfo = req.body["encInfo"];
+    const input_word = req.body["input_word"];
+    const output_word = req.body["output_word"];
+    // console.log(req.body);
+    const info = urlEncrypter.decodeInformation(encInfo);
+    if (info === null) {
+        res.send(JSON.stringify({ success: false }));
+    }
+    res.send(JSON.stringify({ success: true }));
+    await (0, replaceWords_1.addReplcaceWord)(info.team_id, input_word, output_word);
+});
+/**
+ * Delete Replace Words
+ */
+receiver.app.delete(`/api/replaceWords`, async (req, res) => {
+    const encInfo = req.body["encInfo"];
+    const input_word = req.body["input_word"];
+    // console.log(req.body);
+    const info = urlEncrypter.decodeInformation(encInfo);
+    if (info === null) {
+        res.send(JSON.stringify({ success: false }));
+    }
+    res.send(JSON.stringify({ success: true }));
+    await (0, replaceWords_1.deleteReplcaceWord)(info.team_id, input_word);
 });
 /// BOLT MANAGE ////
 const start = async () => {

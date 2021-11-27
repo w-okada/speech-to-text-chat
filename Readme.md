@@ -100,9 +100,12 @@ $ heroku addons:create heroku-postgresql:hobby-dev
 $ heroku pg:psql
 
 ::DATABASE=> CREATE TABLE auths (team_id varchar(16) primary key, data varchar(2048));
+::DATABASE=> CREATE TABLE replace_words (team_id varchar(16) primary key, data varchar(10485760));
 ```
 
--   Write down url of the heroku app.
+-   10485760 = 1024*1024*10, max of psql
+
+*   Write down url of the heroku app.
 
 ```
 $ heroku apps:info -s  | grep web_url | cut -d= -f2

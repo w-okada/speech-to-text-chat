@@ -39,6 +39,9 @@ const App = () => {
     const [channelId, setChannelId] = useState("");
     const [ts, setTs] = useState("");
 
+    const [replaceWordInput, setReplaceWordInput] = useState("");
+    const [replaceWordOutput, setReplaceWordOutput] = useState("");
+
     const [languageKey, setLanguageKey] = useState("default" as keyof typeof LANGUAGES | "default");
     useEffect(() => {
         restApiClient.decodeInformation(code).then((roomInfo) => {
@@ -52,6 +55,11 @@ const App = () => {
     const onDeleteClicked = () => {
         console.log(`DELETE ${teamId} ${channelId}, ${ts}`);
         restApiClient.deleteWords(teamId, channelId, ts);
+    };
+
+    const onAddReplaceWordClicked = () => {
+        console.log(`ddReplaceWord ${teamId} ${channelId}, ${ts}`);
+        restApiClient.addReplaceWord(teamId, replaceWordInput, replaceWordOutput);
     };
 
     // const onReloadDeviceClicked = () => {
@@ -240,6 +248,25 @@ const App = () => {
                         reload device list
                     </Button> */}
                 </div>
+
+                <div style={{ display: "flex", flexDirection: "column" }}>
+                    <div>
+                        <TextField required variant="standard" margin="normal" fullWidth id="team_id" name="team_id" label="team_id" value={teamId} onChange={(e) => setTeamId(e.target.value)} />
+                    </div>
+                    <div>
+                        <TextField required variant="standard" margin="normal" fullWidth id="input_word" name="input_word" label="input_word" value={replaceWordInput} onChange={(e) => setReplaceWordInput(e.target.value)} />
+                    </div>
+                    <div>
+                        <TextField required variant="standard" margin="normal" fullWidth id="output_word" name="output_word" label="output_word" value={replaceWordOutput} onChange={(e) => setReplaceWordOutput(e.target.value)} />
+                    </div>
+                    <div style={{ verticalAlign: "bottom" }}>
+                        <Link onClick={onAddReplaceWordClicked}>Add Replace Word</Link>
+                    </div>
+                    {/* <Button fullWidth variant="outlined" color="primary" >
+                        reload device list
+                    </Button> */}
+                </div>
+
                 {/* <div style={{ display: "flex", flexDirection: "column", margin: "10px" }}>
                     <Button fullWidth variant="outlined" color="primary" onClick={onReloadDeviceClicked}>
                         reload device list
