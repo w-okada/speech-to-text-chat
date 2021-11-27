@@ -46,6 +46,7 @@ const saveReplaceWords = async (teamId: string, data: ReplaceWords) => {
                 text: "INSERT INTO public.replace_words (team_id, data) VALUES($1, $2)",
                 values: [teamId, JSON.stringify(data)],
             };
+            console.log("insert::", JSON.stringify(data));
             await client.query(insertQuery);
         } else {
             // update
@@ -53,6 +54,7 @@ const saveReplaceWords = async (teamId: string, data: ReplaceWords) => {
                 text: "UPDATE public.replace_words SET data = $2 WHERE team_id = $1",
                 values: [teamId, JSON.stringify(data)],
             };
+            console.log("update::", JSON.stringify(data));
             await client.query(deleteQuery);
         }
     } catch (exception) {
