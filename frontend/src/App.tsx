@@ -251,9 +251,6 @@ const App = () => {
 
                 <div style={{ display: "flex", flexDirection: "column" }}>
                     <div>
-                        <TextField required variant="standard" margin="normal" fullWidth id="team_id" name="team_id" label="team_id" value={teamId} onChange={(e) => setTeamId(e.target.value)} />
-                    </div>
-                    <div>
                         <TextField required variant="standard" margin="normal" fullWidth id="input_word" name="input_word" label="input_word" value={replaceWordInput} onChange={(e) => setReplaceWordInput(e.target.value)} />
                     </div>
                     <div>
