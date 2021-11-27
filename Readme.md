@@ -171,8 +171,14 @@ see ./LICENSE
 
 Copyright (c) 2021 Wataru Okada <wataru.okada@flect.co.jp>
 
-# NG WORD List
+# NG WORD List の作成方法(Japanese)
 
 https://wiki.denfaminicogamer.jp/rpgtkoolmvtrinity/%28switch%E7%89%88%E3%81%AE%E3%81%BF%29NG%E3%83%AF%E3%83%BC%E3%83%89%E6%A4%9C%E8%A8%BC%E3%83%AA%E3%82%B9%E3%83%88
 
 (\S*)\s*(\S*)\s*.\* -> {$1:$2},
+
+https://www.en-pc.jp/tech/base64.php
+
+-   開始と終了を[]で囲む。
+-   エスケープを含む文字列を削除
+-   最後のカンマを除く

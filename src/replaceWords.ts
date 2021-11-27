@@ -26,12 +26,12 @@ const loadReplaceWords = async (teamId: string): Promise<ReplaceWords> => {
         const res = await client.query(query);
         if (res.rows.length == 0) {
             console.log("no record!!");
-            return {};
+            return globalReplaceWords;
         }
         return JSON.parse(res.rows[0].data);
     } catch (exception) {
         console.log("load replace words information error:", JSON.stringify(exception));
-        return {};
+        return globalReplaceWords;
     }
 };
 
