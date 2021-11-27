@@ -94,6 +94,7 @@ const replaceWord = async (teamId, message) => {
         const outputWord = replaceWords[teamId][inputWord];
         // const res = prev.replace(/`${inputWord}`/g, outputWord);
         const res = prev.replace(new RegExp(inputWord, "g"), outputWord);
+        console.log(inputWord);
         return res;
     }, message);
 };
