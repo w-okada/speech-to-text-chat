@@ -90,7 +90,8 @@ export const replaceWord = async (teamId: string, message: string) => {
     }
     return Object.keys(replaceWords[teamId]).reduce((prev, inputWord) => {
         const outputWord = replaceWords[teamId][inputWord];
-        const res = prev.replace(/`${inputWord}`/g, outputWord);
+        // const res = prev.replace(/`${inputWord}`/g, outputWord);
+        const res = prev.replace(new RegExp(inputWord, "g"), outputWord);
         return res;
     }, message);
 };
