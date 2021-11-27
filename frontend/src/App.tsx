@@ -58,8 +58,8 @@ const App = () => {
     };
 
     const onAddReplaceWordClicked = () => {
-        console.log(`ddReplaceWord ${teamId} ${channelId}, ${ts}`);
-        restApiClient.addReplaceWord(teamId, replaceWordInput, replaceWordOutput);
+        console.log(`addReplaceWord ${code} ${channelId}, ${ts}`);
+        restApiClient.addReplaceWord(code, replaceWordInput, replaceWordOutput);
     };
 
     // const onReloadDeviceClicked = () => {
