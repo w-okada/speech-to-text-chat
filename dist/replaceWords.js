@@ -34,9 +34,13 @@ const saveReplaceWords = async (teamId, data) => {
         text: "SELECT * FROM public.replace_words WHERE replace_words = $1",
         values: [teamId],
     };
+    console.log(`SELECT1 ${teamId}`);
     try {
+        console.log(`SELECT2 ${teamId}`);
         const client = await pool.connect();
+        console.log(`SELECT3 ${teamId}`);
         const res = await client.query(query);
+        console.log(`SELECT4 ${teamId}`);
         if (res.rows.length == 0) {
             // Insert
             var insertQuery = {
