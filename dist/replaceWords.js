@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.deleteReplcaceWord = exports.addReplcaceWord = exports.getReplcaceWord = void 0;
+exports.replaceWord = exports.deleteReplcaceWord = exports.addReplcaceWord = exports.getReplcaceWord = void 0;
 const pg_1 = require("pg");
 const pool = new pg_1.Pool({
     connectionString: process.env.DATABASE_URL,
@@ -34,13 +34,9 @@ const saveReplaceWords = async (teamId, data) => {
         text: "SELECT * FROM public.replace_words WHERE team_id = $1",
         values: [teamId],
     };
-    console.log(`SELECT1 ${teamId}`);
     try {
-        console.log(`SELECT2 ${teamId}`);
         const client = await pool.connect();
-        console.log(`SELECT3 ${teamId}`);
         const res = await client.query(query);
-        console.log(`SELECT4 ${teamId}`);
         if (res.rows.length == 0) {
             // Insert
             var insertQuery = {
@@ -56,7 +52,6 @@ const saveReplaceWords = async (teamId, data) => {
                 text: "UPDATE public.replace_words SET data = $2 WHERE team_id = $1",
                 values: [teamId, JSON.stringify(data)],
             };
-            console.log("update::", JSON.stringify(data));
             await client.query(deleteQuery);
         }
     }
@@ -87,3 +82,14 @@ const deleteReplcaceWord = async (teamId, input) => {
     await saveReplaceWords(teamId, replaceWords[teamId]);
 };
 exports.deleteReplcaceWord = deleteReplcaceWord;
+const replaceWord = async (teamId, message) => {
+    if (!replaceWords[teamId]) {
+        replaceWords[teamId] = await loadReplaceWords(teamId);
+    }
+    return Object.keys(replaceWords[teamId]).reduce((prev, inputWord) => {
+        const outputWord = replaceWords[teamId][inputWord];
+        const res = prev.replace(/`${inputWord}`/g, outputWord);
+        return res;
+    }, message);
+};
+exports.replaceWord = replaceWord;

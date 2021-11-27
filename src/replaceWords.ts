@@ -37,14 +37,10 @@ const saveReplaceWords = async (teamId: string, data: ReplaceWords) => {
         text: "SELECT * FROM public.replace_words WHERE team_id = $1",
         values: [teamId],
     };
-    console.log(`SELECT1 ${teamId}`);
 
     try {
-        console.log(`SELECT2 ${teamId}`);
         const client = await pool.connect();
-        console.log(`SELECT3 ${teamId}`);
         const res = await client.query(query);
-        console.log(`SELECT4 ${teamId}`);
         if (res.rows.length == 0) {
             // Insert
             var insertQuery = {
@@ -59,7 +55,6 @@ const saveReplaceWords = async (teamId: string, data: ReplaceWords) => {
                 text: "UPDATE public.replace_words SET data = $2 WHERE team_id = $1",
                 values: [teamId, JSON.stringify(data)],
             };
-            console.log("update::", JSON.stringify(data));
             await client.query(deleteQuery);
         }
     } catch (exception) {
@@ -87,4 +82,15 @@ export const deleteReplcaceWord = async (teamId: string, input: string) => {
     }
     delete replaceWords[teamId][input];
     await saveReplaceWords(teamId, replaceWords[teamId]);
+};
+
+export const replaceWord = async (teamId: string, message: string) => {
+    if (!replaceWords[teamId]) {
+        replaceWords[teamId] = await loadReplaceWords(teamId);
+    }
+    return Object.keys(replaceWords[teamId]).reduce((prev, inputWord) => {
+        const outputWord = replaceWords[teamId][inputWord];
+        const res = prev.replace(/`${inputWord}`/g, outputWord);
+        return res;
+    }, message);
 };

@@ -5,7 +5,7 @@ import { generateInitialRoom, ROOMS, UserInformation } from "./data";
 import { Encrypter } from "./encrypt";
 import { v4 } from "uuid";
 import { addTeamInformation, deleteInstallation, fetchInstallation, fetchToken } from "./auth";
-import { addReplcaceWord, deleteReplcaceWord, getReplcaceWord } from "./replaceWords";
+import { addReplcaceWord, deleteReplcaceWord, getReplcaceWord, replaceWord } from "./replaceWords";
 const BASE_URL = process.env.APP_HEROKU_URL;
 const port: number = Number(process.env.PORT) || 3000;
 const rooms: ROOMS = {};
@@ -77,6 +77,8 @@ receiver.app.post(`/api/words`, async (req, res) => {
     }
     res.send(JSON.stringify({ success: true }));
 
+    const replacedWord = await replaceWord(info.team_id, word);
+
     const token = await fetchToken(info.team_id);
     /// update db ////
     const room = rooms[info.room_key];
@@ -89,7 +91,7 @@ receiver.app.post(`/api/words`, async (req, res) => {
         userName: info.user_name,
         imageUrl: info.image_url,
         timestamp: new Date().getTime(),
-        word: word,
+        word: replacedWord,
     });
 
     const blocks = generateWholeBlocks(room);

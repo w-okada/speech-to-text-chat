@@ -90,6 +90,7 @@ receiver.app.post(`/api/words`, async (req, res) => {
         res.send(JSON.stringify({ success: false }));
     }
     res.send(JSON.stringify({ success: true }));
+    const replacedWord = await (0, replaceWords_1.replaceWord)(info.team_id, word);
     const token = await (0, auth_1.fetchToken)(info.team_id);
     /// update db ////
     const room = rooms[info.room_key];
@@ -101,7 +102,7 @@ receiver.app.post(`/api/words`, async (req, res) => {
         userName: info.user_name,
         imageUrl: info.image_url,
         timestamp: new Date().getTime(),
-        word: word,
+        word: replacedWord,
     });
     const blocks = (0, blocks_1.generateWholeBlocks)(room);
     const msg = {
