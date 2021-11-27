@@ -44,6 +44,13 @@ Your voice is showed in the channel.
 
 ![image](https://user-images.githubusercontent.com/48346627/143660236-513d660f-d71d-4932-8ec3-714a601c0157.png)
 
+(3-2) launch by slash command.
+You can also launch speech-to-text-chat by slash command as below. <room name> is anything ok you want.
+
+```
+/speech-to-text-chat <room name>
+```
+
 # Build and Deploy
 
 **The accuracy of speech recognition is not 100% accurate. In some cases, speech may not be recognized properly or may be converted into words that may be considered offensive. Please be forewarned.**
@@ -141,6 +148,12 @@ Subscribe to bot events: message.channels, message.groups
 ```
 Redirect URLs:  <url of the heroku app>slack/oauth_redirect
 Bot Token Scopes: channels:history, commands, groups:history, chat:write, users:read
+```
+
+### Manage Distribution
+
+```
+Remove Hard Coded Information: check
 ```
 
 ## Install Slack App
