@@ -1,4 +1,5 @@
 import { Pool } from "pg";
+import { replaceWordsList } from "./replaceWordsList";
 
 const pool = new Pool({
     connectionString: process.env.DATABASE_URL,
@@ -12,6 +13,8 @@ type ReplaceWords = { [input: string]: string };
 type AllReplaceWords = { [temaId: string]: ReplaceWords };
 
 const replaceWords: AllReplaceWords = {};
+const replaceWordsListDecoded = Buffer.from(replaceWordsList, "base64");
+const globalReplaceWords = JSON.parse(decodeURIComponent(replaceWordsListDecoded.toString()));
 
 const loadReplaceWords = async (teamId: string): Promise<ReplaceWords> => {
     var query = {
@@ -88,6 +91,7 @@ export const replaceWord = async (teamId: string, message: string) => {
     if (!replaceWords[teamId]) {
         replaceWords[teamId] = await loadReplaceWords(teamId);
     }
+    console.log(globalReplaceWords);
     return Object.keys(replaceWords[teamId]).reduce((prev, inputWord) => {
         const outputWord = replaceWords[teamId][inputWord];
         // const res = prev.replace(/`${inputWord}`/g, outputWord);

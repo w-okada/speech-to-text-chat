@@ -2,6 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.replaceWord = exports.deleteReplcaceWord = exports.addReplcaceWord = exports.getReplcaceWord = void 0;
 const pg_1 = require("pg");
+const replaceWordsList_1 = require("./replaceWordsList");
 const pool = new pg_1.Pool({
     connectionString: process.env.DATABASE_URL,
     // ssl: true,
@@ -10,6 +11,8 @@ const pool = new pg_1.Pool({
     },
 });
 const replaceWords = {};
+const replaceWordsListDecoded = Buffer.from(replaceWordsList_1.replaceWordsList, "base64");
+const globalReplaceWords = JSON.parse(decodeURIComponent(replaceWordsListDecoded.toString()));
 const loadReplaceWords = async (teamId) => {
     var query = {
         text: "SELECT * FROM public.replace_words WHERE team_id = $1",
@@ -86,6 +89,7 @@ const replaceWord = async (teamId, message) => {
     if (!replaceWords[teamId]) {
         replaceWords[teamId] = await loadReplaceWords(teamId);
     }
+    console.log(globalReplaceWords);
     return Object.keys(replaceWords[teamId]).reduce((prev, inputWord) => {
         const outputWord = replaceWords[teamId][inputWord];
         // const res = prev.replace(/`${inputWord}`/g, outputWord);
