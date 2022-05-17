@@ -1,5 +1,5 @@
-import { Avatar, Box, Container, Divider, FormControl, InputLabel, Link, MenuItem, Select, TextField, Typography } from "@material-ui/core";
-import { Forum } from "@material-ui/icons";
+import { Avatar, Box, Container, FormControl, InputLabel, Link, MenuItem, Select, TextField, Typography } from "@mui/material";
+import ForumIcon from "@mui/icons-material/Forum";
 import React, { useEffect, useRef, useState } from "react";
 import { useMemo } from "react";
 import { RestApiClient } from "./api/RestApiClient";
@@ -156,7 +156,7 @@ const App = () => {
             <div style={{ display: "flex", flexDirection: "column", alignItems: "center", border: "solid" }}>
                 <div style={{ margin: "20px" }}>
                     <Avatar>
-                        <Forum />
+                        <ForumIcon />
                     </Avatar>
                 </div>
                 <div style={{ margin: "20px" }}>

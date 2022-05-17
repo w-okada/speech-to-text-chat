@@ -1,5 +1,5 @@
+import { Link, Typography } from "@mui/material";
 import React, { useMemo } from "react";
-import { Typography, Link } from "@material-ui/core";
 export const Copyright = () => {
     const copyright = useMemo(() => {
         return (
